@@ -3,6 +3,7 @@
 #' @param coord data.frame with x (column 1) and y (column 2) coordinates for N samples. Usually the output of coords_from_image
 #' @param x is of class cimg
 #' @param col.space character, one of "HSL", "HSV", "HSI", "sRGB", "YUV", "Lab", "XYZ" of the putput color space model
+#' @param pg logical if all values inside a polygone should be returned. In this case the points drawn are the vertices of the polygon.
 #'
 #' @return data.frame with color space values for each coordinate
 #'
@@ -13,32 +14,46 @@
 #' col <- color_from_coords(coord = xy, x = a.m, col.space = "HSL")
 #' col
 #'
+#' @import fields
 #' @export
 
 
-color_from_coords <- function(coord, x,
-  col.space = c("HSL", "HSV", "HSI", "sRGB", "YUV", "Lab", "XYZ")){
+color_from_coords <- function(coord, x, pg,
+  col.space = c("RGB", "HSL", "HSV", "HSI", "sRGB", "YUV", "Lab", "XYZ")){
 
-  ## define color space function
-  fun <- paste0("RGBto", col.space)
-  fun <- eval(parse(text = fun))
+  if(!col.space == "RGB"){
+    ## define color space function
+    fun <- paste0("RGBto", col.space)
+    fun <- eval(parse(text = fun))
 
-  ## convert color space of image
-  x.hsl <- fun(x)
-
-  ## get color values from image
-  res <- list()
-  for(i in 1:length(coord)){
-    res[[i]] <- at(x.hsl, x = coord$x[i], y = coord$y[i], cc = 1:3)
+    ## convert color space of image
+    x <- fun(x)
   }
-  res <- as.data.frame(do.call(rbind, res))
+
+
+  ## create data.frame
+  amdf <- as.data.frame(x)
+
+  if(pg){
+    res <- amdf[in.poly(amdf, coord),]
+  }
+
+  if(!pg){
+    ## get color values from image
+    res <- list()
+    for(i in 1:dim(coord)[1]){
+      res[[i]] <- amdf[amdf$x %in% round(coord$x[i]) & amdf$y %in% round(coord$y[i]), ]
+    }
+    res <- as.data.frame(do.call(rbind, res))
+  }
 
   ## set names
+  res$cc <- factor(res$cc)
   if(col.space == "sRGB"){
-    names(res) <- c("sR","sG", "sB")
+    leves(res$cc) <- c("sR","sG", "sB")
   }else{
     nam <- strsplit(col.space, "")
-    names(res) <- nam[[1]]
+    levels(res$cc) <- nam[[1]]
   }
 
   ## return result
