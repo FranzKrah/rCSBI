@@ -1,5 +1,5 @@
 # rCSBI
-Color Sampling from Biological Images
+## Color Sampling from (Biological) Images
 
 ## Install
 
