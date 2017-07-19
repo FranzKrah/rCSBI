@@ -6,7 +6,6 @@
 #'
 #' @return data.frame with color space values for each coordinate
 #'
-#' @import imager
 #'
 #' @examples
 #' #' a.m <- load.image("https://upload.wikimedia.org/wikipedia/commons/0/02/2006-10-25_Amanita_muscaria_crop.jpg")

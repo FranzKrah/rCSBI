@@ -2,4 +2,3 @@
 
 export(color_from_coords)
 export(coords_from_image)
-import(imager)
