@@ -10,7 +10,7 @@
 #' @examples
 #' #' a.m <- load.image("https://upload.wikimedia.org/wikipedia/commons/0/02/2006-10-25_Amanita_muscaria_crop.jpg")
 #' xy <- coords_from_image(a.m, n = 2)
-#' col <- HSL_from_coords(coord = xy, x = a.m, col.space = "HSL")
+#' col <- color_from_coords(coord = xy, x = a.m, col.space = "HSL")
 #' col
 #'
 #' @export
@@ -29,7 +29,7 @@ color_from_coords <- function(coord, x,
   ## get color values from image
   res <- list()
   for(i in 1:length(coord)){
-    res[[i]] <- at(x.hsl, x = am$x[i], y = am$y[i], cc = 1:3)
+    res[[i]] <- at(x.hsl, x = coord$x[i], y = coord$y[i], cc = 1:3)
   }
   res <- as.data.frame(do.call(rbind, res))
 
