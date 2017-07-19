@@ -20,3 +20,12 @@ head(col); dim(col)
 ### Plot range of mushroom
 library("ggplot2")
 ggplot(col,aes(value,col=cc))+geom_histogram(bins=30)+facet_wrap(~ cc, scales = "free")
+
+
+library("circular")
+hist((col[col$cc=="H",]$value), breaks = 360)
+m <- suppressWarnings(mean.circular(as.circular(col[col$cc=="H",]$value, units = "degrees")))
+abline(v = m, col = "red", lwd = 3)
+
+b <- boxplot.stats(col[col$cc=="H",]$value)
+hist(col[col$cc=="H",]$value[!col[col$cc=="H",]$value %in% b$out])
