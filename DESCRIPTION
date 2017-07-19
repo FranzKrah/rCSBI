@@ -1,6 +1,6 @@
 Package: rCSBI
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Sample color points from (biological) images
 Version: 0.1.0
 Author: Franz-Sebastian Krah
 Maintainer: Franz-S. Krah <franz.krah@tum.de>
@@ -9,3 +9,4 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
+Imports: imager
