@@ -20,7 +20,8 @@ library("rCSBI")
 ```r
 library("rCSBI")
 library("imager")
-a.m <- load.image("https://upload.wikimedia.org/wikipedia/commons/0/02/2006-10-25_Amanita_muscaria_crop.jpg")
+url <- "https://upload.wikimedia.org/wikipedia/commons/0/02/2006-10-25_Amanita_muscaria_crop.jpg"
+a.m <- load.image(url) # local file is also possible
 ## click 10 points in the image you want to know the color values of
 ## or you can arrange the 10 points in a polygon way to extract
 ## all values in the polygon (next function pg = TRUE)
