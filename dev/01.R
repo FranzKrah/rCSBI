@@ -13,14 +13,13 @@ a.m <- load.image("https://upload.wikimedia.org/wikipedia/commons/0/02/2006-10-2
 ## all values in the polygon (next function pg = TRUE)
 xy <- coords_from_image(x = a.m, n = 10)
 ## get the values
-col <- color_from_coords(coord = xy, x = a.m, col.space = "HSL", pg = TRUE)
+col <- color_from_coords(coord = xy, x = a.m, col.space = "HSL")
 ## print the values
 head(col); dim(col)
 
 ### Plot range of mushroom
 library("ggplot2")
-ggplot(col,aes(value,col=cc))+geom_histogram(bins=30)+facet_wrap(~ cc, scales = "free")
-
+ggplot(col$polygon ,aes(value,col=cc))+geom_histogram(bins=30)+facet_wrap(~ cc, scales = "free")
 
 library("circular")
 hist((col[col$cc=="H",]$value), breaks = 360)
