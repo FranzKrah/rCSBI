@@ -20,7 +20,10 @@ coords_from_image <- function(x, n){
   cat("Please click ", n, " times in the image (do not click more)")
 
   ## plot image to console
+  par(mar = c(0,0,0,0))
   plot(x)
+  par(mar = c(4,4,4,4))
+
 
   ## click
   coord <- locator(n = n, type ="p")

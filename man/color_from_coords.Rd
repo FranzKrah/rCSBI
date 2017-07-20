@@ -4,20 +4,26 @@
 \alias{color_from_coords}
 \title{Sample colors from images based on coordinates}
 \usage{
-color_from_coords(coord, x, pg, col.space = c("RGB", "HSL", "HSV", "HSI",
-  "sRGB", "YUV", "Lab", "XYZ"))
+color_from_coords(coord, x, col.space = c("RGB", "HSL", "HSV", "HSI", "sRGB",
+  "YUV", "Lab", "XYZ"))
 }
 \arguments{
 \item{coord}{data.frame with x (column 1) and y (column 2) coordinates for N samples. Usually the output of coords_from_image}
 
 \item{x}{is of class cimg}
 
-\item{pg}{logical if all values inside a polygone should be returned. In this case the points drawn are the vertices of the polygon.}
-
 \item{col.space}{character, one of "HSL", "HSV", "HSI", "sRGB", "YUV", "Lab", "XYZ" of the putput color space model}
+
+\item{pg}{logical if all values inside a polygone should be returned. In this case the points drawn are the vertices of the polygon.}
 }
 \value{
-data.frame with color space values for each coordinate
+list with three elements
+
+points color values of points
+
+polygon color values within the polygon spanned by the points
+
+background color values no covered by the polygon
 }
 \description{
 Sample colors from images based on coordinates

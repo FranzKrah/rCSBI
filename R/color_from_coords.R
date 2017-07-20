@@ -5,7 +5,10 @@
 #' @param col.space character, one of "HSL", "HSV", "HSI", "sRGB", "YUV", "Lab", "XYZ" of the putput color space model
 #' @param pg logical if all values inside a polygone should be returned. In this case the points drawn are the vertices of the polygon.
 #'
-#' @return data.frame with color space values for each coordinate
+#' @return list with three elements
+#' @return points color values of points
+#' @return polygon color values within the polygon spanned by the points
+#' @return background color values no covered by the polygon
 #'
 #'
 #' @examples
@@ -18,7 +21,7 @@
 #' @export
 
 
-color_from_coords <- function(coord, x, pg,
+color_from_coords <- function(coord, x,
   col.space = c("RGB", "HSL", "HSV", "HSI", "sRGB", "YUV", "Lab", "XYZ")){
 
   if(!col.space == "RGB"){
@@ -34,28 +37,34 @@ color_from_coords <- function(coord, x, pg,
   ## create data.frame
   amdf <- as.data.frame(x)
 
-  if(pg){
-    res <- amdf[in.poly(amdf, coord),]
-  }
+  ## polygon
+  res_poly <- amdf[in.poly(amdf, coord),]
 
-  if(!pg){
-    ## get color values from image
-    res <- list()
-    for(i in 1:dim(coord)[1]){
-      res[[i]] <- amdf[amdf$x %in% round(coord$x[i]) & amdf$y %in% round(coord$y[i]), ]
-    }
-    res <- as.data.frame(do.call(rbind, res))
+  ## non polygon
+  res_npoly <- amdf[!in.poly(amdf, coord),]
+
+  ## get color values from image
+  res_points <- list()
+  for(i in 1:dim(coord)[1]){
+    res_points[[i]] <- amdf[amdf$x %in% round(coord$x[i]) & amdf$y %in% round(coord$y[i]), ]
   }
+  res_points <- as.data.frame(do.call(rbind, res_points))
 
   ## set names
-  res$cc <- factor(res$cc)
-  if(col.space == "sRGB"){
-    leves(res$cc) <- c("sR","sG", "sB")
+  res_poly$cc <- factor(res_poly$cc)
+  res_npoly$cc <- factor(res_npoly$cc)
+  res_points$cc <- factor(res_points$cc)
+    if(col.space == "sRGB"){
+    leves(res_poly$cc) <- c("sR","sG", "sB")
+    leves(res_npoly$cc) <- c("sR","sG", "sB")
+    leves(res_points$cc) <- c("sR","sG", "sB")
   }else{
     nam <- strsplit(col.space, "")
-    levels(res$cc) <- nam[[1]]
+    levels(res_poly$cc) <- nam[[1]]
+    levels(res_npoly$cc) <- nam[[1]]
+    levels(res_points$cc) <- nam[[1]]
   }
 
   ## return result
-  return(res)
+  return(list(points = res_points, polygon = res_poly, background = res_npoly))
 }
